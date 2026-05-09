@@ -1,7 +1,7 @@
 # 🛡️ Tower Defense — OOP Projesi
 
 ## Proje Özeti
-C# Windows Forms ile geliştirilmiş tam özellikli Tower Defense oyunu.
+C# Avalonia UI ile geliştirilmiş tam özellikli Tower Defense oyunu.
 Nesne Yönelimli Programlama prensiplerini gerçek bir oyun üzerinde uygular.
 
 ---
