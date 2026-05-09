@@ -1,0 +1,17 @@
+{
+  "Wave": 0,
+  "Lives": 20,
+  "Gold": 100,
+  "Score": 0,
+  "MapId": "classic",
+  "Towers": [
+    {
+      "Type": "ArrowTower",
+      "X": 216,
+      "Y": 312,
+      "Level": 1
+    }
+  ],
+  "SavedAt": "2026-05-05T16:08:51.1439058+03:00",
+  "Version": "2.0"
+}

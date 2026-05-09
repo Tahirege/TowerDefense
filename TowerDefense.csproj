@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TowerDefense</RootNamespace>
+    <AssemblyName>TowerDefense</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RuntimeIdentifiers>osx-arm64;osx-x64;win-x64;linux-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia"                      Version="11.1.4" />
+    <PackageReference Include="Avalonia.Desktop"              Version="11.1.4" />
+    <PackageReference Include="Avalonia.Skia"                 Version="11.1.4" />
+    <PackageReference Include="Avalonia.Themes.Fluent"        Version="11.1.4" />
+    <PackageReference Include="Avalonia.Fonts.Inter"          Version="11.1.4" />
+    <PackageReference Include="SkiaSharp"                     Version="2.88.8" />
+    <PackageReference Include="SkiaSharp.NativeAssets.macOS"  Version="2.88.8" />
+  </ItemGroup>
+
+</Project>
