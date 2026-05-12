@@ -73,9 +73,6 @@ GameObject (abstract)
 |---------|----------|
 | Sol tık (panel) | Kule yerleştir / kule seç |
 | Sağ tık | Seçimi iptal et |
-| Ok Kulesi (100💰) | Hızlı ateş, tek hedef |
-| Top Kulesi (200💰) | Yavaş ateş, alan hasarı |
-| Buz Kulesi (150💰) | Düşmanları yavaşlatır |
 | ⬆ Yükselt | Seçili kuleyi yükselt (max Sev.3) |
 |  Sat | Kuleyi sat, altın geri al |
 | ▶ Dalga Başlat | Sonraki düşman dalgasını başlat |
