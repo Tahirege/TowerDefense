@@ -108,7 +108,7 @@ TowerDefense/
 
 ## Kurulum & Çalıştırma
 ```bash
-# Gereksinim: .NET 8 SDK (Windows)
+# Gereksinim: .NET 8 SDK 
 git clone <repo>
 cd TowerDefense
 dotnet run
