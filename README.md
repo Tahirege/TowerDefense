@@ -63,7 +63,7 @@ GameObject (abstract)
 
 ### Veri Saklama
 - Skor: `Data/scores.json` (JSON formatı)
-- Oyun durumu: `Data/save.txt` (metin formatı)
+
 
 ---
 
