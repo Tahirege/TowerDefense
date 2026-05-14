@@ -145,7 +145,7 @@ namespace TowerDefense.Enemies
 
         public AggroEnemy(float x, float y) : base(x, y, 120, 45f, 25)
         {
-            EnemyName = "Savaşçı";
+            EnemyName = "Warrior";
             EnemyColor = SKColors.DarkRed;
             Size = 22f;
             AttackRange = 40f;

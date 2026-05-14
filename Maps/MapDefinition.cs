@@ -71,12 +71,10 @@ namespace TowerDefense.Maps
             new MapDefinition(
                 "hell", "Hell", "Fast enemies - Expert",
                 new int[][] {
-                    // Üst yol
                     new[]{1,0},new[]{1,1},new[]{1,2},new[]{1,3},new[]{1,4},new[]{1,5},
                     new[]{1,6},new[]{1,7},new[]{1,8},new[]{1,9},new[]{1,10},new[]{1,11},
                     new[]{2,11},new[]{3,11},new[]{4,11},new[]{5,11},new[]{6,11},
                     new[]{6,12},new[]{6,13},new[]{6,14},new[]{6,15},new[]{6,16},new[]{6,17},
-                    // Alt yol birleşimi
                     new[]{7,17},new[]{8,17},new[]{9,17},new[]{10,17},new[]{11,17},
                 }, 15, 1.3f,
                 WaterCells: new int[][] {
@@ -97,7 +95,7 @@ namespace TowerDefense.Maps
             new MapDefinition(
                 "linedefense", "Chess (Line Defense)", "Open field defense. Enemies comes at random spots.",
                 new int[][] {
-                    new[]{0,8}, new[]{11,8} // Sadece başlangıç ve bitiş temsili
+                    new[]{0,8}, new[]{11,8}
                 }, 10, 1.0f)
         };
     }

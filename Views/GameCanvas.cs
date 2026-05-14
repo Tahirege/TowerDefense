@@ -198,10 +198,10 @@ namespace TowerDefense.Views
                     "Laser"  => new LaserTower(SnapX, SnapY),
                     "Bomb"   => new BombTower(SnapX, SnapY),
                     "Sniper" => new SniperTower(SnapX, SnapY),
-                    _ => throw new GameException("Bilinmeyen kule tipi")
+                    _ => throw new GameException("Unknown tower type")
                 };
                 Game.PlaceTower(tower);
-                OnMessage?.Invoke($"✅ {tower.TowerName} yerleştirildi!");
+                OnMessage?.Invoke($"✅ {tower.TowerName} placed!");
             }
             catch (InsufficientGoldException ex) { OnMessage?.Invoke($"❌ {ex.Message}"); }
             catch (TowerPlacementException   ex) { OnMessage?.Invoke($"❌ {ex.Message}"); }
@@ -221,7 +221,7 @@ namespace TowerDefense.Views
             {
                 SelectedTowerObj.IsSelected = true;
                 OnMessage?.Invoke($"🏰 {SelectedTowerObj.TowerName} | Lv.{SelectedTowerObj.Level} | " +
-                                  $"Yükselt:{SelectedTowerObj.UpgradeCost}💰 | Sat:{SelectedTowerObj.SellValue}💰");
+                                  $"Upgrade:{SelectedTowerObj.UpgradeCost}💰 | Sell:{SelectedTowerObj.SellValue}💰");
                 return true;
             }
             return false;

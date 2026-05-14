@@ -16,7 +16,7 @@ namespace TowerDefense.Managers
         public int Score => CurrentScore;
         public List<ScoreRecord> Leaderboard => LeaderboardList;
 
-        public ScoreManager(string playerName = "Oyuncu")
+        public ScoreManager(string playerName = "Player")
         { PlayerName = playerName; TryLoad(); }
 
         public void Add(int pts) => CurrentScore += pts;
@@ -36,7 +36,7 @@ namespace TowerDefense.Managers
                 Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path) ?? "Data");
                 File.WriteAllText(path, JsonSerializer.Serialize(LeaderboardList, new JsonSerializerOptions { WriteIndented = true }));
             }
-            catch (Exception ex) { throw new SaveLoadException("Skor kaydedilemedi", ex); }
+            catch (Exception ex) { throw new SaveLoadException("Could not save scores", ex); }
         }
 
         public void Load(string path)
@@ -46,7 +46,7 @@ namespace TowerDefense.Managers
                 if (!File.Exists(path)) return;
                 LeaderboardList = JsonSerializer.Deserialize<List<ScoreRecord>>(File.ReadAllText(path)) ?? new();
             }
-            catch (Exception ex) { throw new SaveLoadException("Skor yüklenemedi", ex); }
+            catch (Exception ex) { throw new SaveLoadException("Could not load scores", ex); }
         }
 
         public void TryLoad() { try { Load(DefaultPath); } catch { } }

@@ -1,19 +1,19 @@
-# 🛡️ Tower Defense — OOP Projesi
+# 🛡️ Tower Defense — Simplified OOP Project
 
-## Proje Özeti
-C# Avalonia UI ile geliştirilmiş tam özellikli Tower Defense oyunu.
-Nesne Yönelimli Programlama prensiplerini gerçek bir oyun üzerinde uygular.
+## Project Overview
+A full-featured Tower Defense game developed with C# and Avalonia UI. 
+The codebase is designed for accessibility (A1-B1 English) and follows a "public-by-default" architecture for rapid learning and easy state access.
 
 ---
 
-## OOP Prensipleri
+## Architecture Principles
 
-### 1. Encapsulation (Kapsülleme)
-- `GameObject`, `Tower`, `Enemy` sınıflarındaki tüm alanlar `private` — dışarıya yalnızca `property` ile açılır
-- `Tower._damage`, `Enemy._currentHp` gibi kritik alanlar doğrudan erişime kapalı
-- `GameManager` iç listelerini `IReadOnly` wrapper ile sunar
+### 1. Simplified Data Access
+- All critical fields and properties are `public` for direct access.
+- Encourages developer discipline over strict encapsulation.
+- Simplifies the game loop and state management for beginners.
 
-### 2. Inheritance (Kalıtım)
+### 2. Inheritance Hierarchy
 ```
 GameObject (abstract)
 ├── Tower (abstract)
@@ -24,90 +24,88 @@ GameObject (abstract)
 │   ├── BasicEnemy
 │   ├── FastEnemy
 │   └── BossEnemy
-└── Projectile (abstract)
-    ├── Arrow
-    ├── Cannonball
-    └── IceProjectile
+└── Shot (abstract)
+    ├── Bullet
+    ├── Ball
+    └── Ice
 ```
 
-### 3. Polymorphism (Çok Biçimlilik)
-- `GameObject.Update()` ve `Draw()` her sınıf tarafından farklı implemente edilir
-- `Tower.TryShoot()` farklı `CreateProjectile()` üretir
-- `Enemy.TakeDamage()` BossEnemy'de zırh hesabı ile override edilir
-- `List<Tower>` üzerinde döngü — her kule kendi davranışını sergiler
+### 3. Polymorphism
+- `GameObject.Update()` and `Draw()` are implemented differently by each class.
+- `Tower.TryShoot()` generates different `Shot` types.
+- `Enemy.TakeDamage()` is overridden in `BossEnemy` for armor calculation.
+- Looping over `List<Tower>` allows each tower to perform its unique behavior.
 
-### 4. Interface'ler (Sözleşmeler)
-| Interface | Açıklama | Uygulayan |
-|-----------|----------|-----------|
-| `IUpgradeable` | Yükselt/Sat | Tower |
-| `IWaveSpawner` | Dalga oluştur | GameManager |
-| `ISaveable` | Kaydet/Yükle | GameManager, ScoreManager |
+### 4. Interfaces
+| Interface | Description | Implemented By |
+|-----------|-------------|----------------|
+| `IUpgradeable` | Upgrade/Sell | Tower |
+| `IWaveSpawner` | Spawn waves | GameManager |
+| `ISaveable` | Save/Load | GameManager, ScoreManager |
 
-### 5. Exception Handling
-| Exception | Ne Zaman Fırlatılır |
-|-----------|---------------------|
-| `GameException` | Genel oyun hataları |
-| `TowerPlacementException` | Geçersiz kule konumu |
-| `InsufficientGoldException` | Yetersiz altın |
-| `SaveLoadException` | Dosya I/O hataları |
-
----
-
-## Fonksiyonel Özellikler
-
-### CRUD İşlemleri
-- **Create**: Kule yerleştirme (haritaya tıkla)
-- **Read**: Kule bilgisi, liderlik tablosu, oyun durumu
-- **Update**: Kule yükseltme (3 seviye)
-- **Delete**: Kule satma
-
-### Veri Saklama
-- Skor: `Data/scores.json` (JSON formatı)
-
+### 5. Custom Exceptions
+| Exception | When it is thrown |
+|-----------|-------------------|
+| `GameException` | General game errors |
+| `TowerPlacementException` | Invalid tower position |
+| `InsufficientGoldException` | Not enough gold |
+| `SaveLoadException` | File I/O errors |
 
 ---
 
-## Oynanış
+## Features
 
-| Kontrol | Açıklama |
-|---------|----------|
-| Sol tık (panel) | Kule yerleştir / kule seç |
-| Sağ tık | Seçimi iptal et |
-| ⬆ Yükselt | Seçili kuleyi yükselt (max Sev.3) |
-|  Sat | Kuleyi sat, altın geri al |
-| ▶ Dalga Başlat | Sonraki düşman dalgasını başlat |
+### Gameplay Mechanics
+- **Create**: Place towers by clicking on the map.
+- **Read**: View tower stats, leaderboard, and game status.
+- **Update**: Upgrade towers (up to Level 3).
+- **Delete**: Sell towers to regain gold.
+
+### Data Persistence
+- High Scores: `Data/scores.json` (JSON format).
 
 ---
 
-## Proje Yapısı
+## Controls
+
+| Control | Description |
+|---------|-------------|
+| Left Click (panel) | Place tower / Select tower |
+| Right Click | Cancel selection |
+| ⬆ Upgrade | Upgrade selected tower (max Lv.3) |
+| 💰 Sell | Sell tower for gold |
+| ▶ Send Wave | Start the next enemy wave |
+
+---
+
+## Project Structure
 ```
 TowerDefense/
 ├── Core/
 │   ├── GameObject.cs      # Abstract base
-│   └── Interfaces/
-│       └── Interfaces.cs  # ITargetingStrategy, IUpgradeable, IWaveSpawner, ISaveable
+│   └── Interfaces.cs      # IUpgradeable, IWaveSpawner, ISaveable
 ├── Towers/
-│   ├── Tower.cs           # Abstract tower
-│   └── ConcreteTowers.cs  # Arrow, Cannon, Ice
+│   ├── Tower.cs           # Abstract tower base
+│   └── TowerTypes.cs      # Arrow, Cannon, Ice, etc.
 ├── Enemies/
-│   ├── Enemy.cs           # Abstract enemy
-│   └── ConcreteEnemies.cs # Basic, Fast, Boss
-├── Projectiles/
-│   └── Projectiles.cs     # Abstract + Arrow, Cannonball, Ice
+│   ├── Enemy.cs           # Abstract enemy base
+│   └── EnemyTypes.cs      # Basic, Fast, Boss, etc.
+├── Shots/
+│   └── Shot.cs            # Abstract + Bullet, Ball, Ice
 ├── Managers/
-│   ├── GameManager.cs     # Ana oyun mantığı
-│   ├── MapManager.cs      # Harita + grid
-│   └── ScoreManager.cs    # Skor + JSON kayıt
+│   ├── GameManager.cs     # Main game logic
+│   ├── MapManager.cs      # Map + Grid handling
+│   └── ScoreManager.cs    # Scores + JSON persistence
+├── Effects/
+│   └── Effects.cs         # Particle systems & visual effects
 ├── Exceptions/
-│   └── GameException.cs   # Özel exception hiyerarşisi
-├── Forms/
-│   └── GameForm.cs        # Windows Forms GUI
-└── Program.cs             # Giriş noktası
+│   └── GameException.cs   # Custom exception hierarchy
+└── Program.cs             # Entry point
 ```
 
 ---
 
-## Kurulum & Çalıştırma
+## Installation & Running
 ```bash
 git clone <repo>
 cd TowerDefense

@@ -177,7 +177,7 @@ namespace TowerDefense.Managers
                         Lives--;
                         Effects.LifeLostEffect(Map.PathPoints[^1].x, Map.PathPoints[^1].y);
                         Audio.Play(SoundEffect.LifeLost);
-                        OnMessage?.Invoke($"❤️ Düşman geçti! Can: {Lives}");
+                        OnMessage?.Invoke($"❤️ Enemy passed! Lives: {Lives}");
                         if (Lives <= 0) DoGameOver();
                     }
                     else
@@ -301,7 +301,7 @@ namespace TowerDefense.Managers
                 else
                 {
                     Audio.Play(SoundEffect.WaveStart);
-                    OnMessage?.Invoke($"✅ Dalga {CurrentWave} tamamlandı! +50 Bonus altın");
+                    OnMessage?.Invoke($"✅ Wave {CurrentWave} complete! +50 Bonus gold");
                     Gold += 50;
                 }
             }
@@ -324,9 +324,9 @@ namespace TowerDefense.Managers
         public void PlaceTower(Tower tower)
         {
             if (Gold < tower.Cost) throw new InsufficientGoldException(tower.Cost, Gold);
-            if (!Map.IsBuildable(tower.X, tower.Y)) throw new TowerPlacementException("Bu alana kule inşa edilemez!");
+            if (!Map.IsBuildable(tower.X, tower.Y)) throw new TowerPlacementException("Cannot build on this area!");
             float distToHero = MathF.Sqrt(MathF.Pow(PlayerHero.X - tower.X, 2) + MathF.Pow(PlayerHero.Y - tower.Y, 2));
-            if (distToHero < 30f) throw new TowerPlacementException("Hero bu alanda duruyor!");
+            if (distToHero < 30f) throw new TowerPlacementException("Hero is standing here!");
             Gold -= tower.Cost;
             Map.MarkOccupied(tower.X, tower.Y);
             Towers.Add(tower);
