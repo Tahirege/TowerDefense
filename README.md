@@ -100,8 +100,6 @@ TowerDefense/
 │   └── ScoreManager.cs    # Skor + JSON kayıt
 ├── Exceptions/
 │   └── GameException.cs   # Özel exception hiyerarşisi
-├── Forms/
-│   └── GameForm.cs        # Windows Forms GUI
 └── Program.cs             # Giriş noktası
 ```
 
