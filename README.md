@@ -84,7 +84,8 @@ GameObject (abstract)
 TowerDefense/
 ├── Core/
 │   ├── GameObject.cs      # Abstract base
-│   └── Interfaces.cs      # IUpgradeable, IWaveSpawner, ISaveable
+│   └── Interfaces/
+│       └── Interfaces.cs  # ITargetingStrategy, IUpgradeable, IWaveSpawner, ISaveable
 ├── Towers/
 │   ├── Tower.cs           # Abstract tower
 │   └── ConcreteTowers.cs  # Arrow, Cannon, Ice

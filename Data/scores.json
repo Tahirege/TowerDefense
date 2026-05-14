@@ -13,9 +13,27 @@
   },
   {
     "PlayerName": "Player",
+    "Score": 109085,
+    "Wave": 15,
+    "Date": "2026-05-14T18:27:09.3766063+03:00"
+  },
+  {
+    "PlayerName": "Player",
+    "Score": 52610,
+    "Wave": 10,
+    "Date": "2026-05-14T16:02:30.6723066+03:00"
+  },
+  {
+    "PlayerName": "Player",
     "Score": 52455,
     "Wave": 10,
     "Date": "2026-05-05T14:41:47.7449324+03:00"
+  },
+  {
+    "PlayerName": "Player",
+    "Score": 51260,
+    "Wave": 10,
+    "Date": "2026-05-12T22:55:09.5417598+03:00"
   },
   {
     "PlayerName": "Player",
@@ -40,23 +58,5 @@
     "Score": 47910,
     "Wave": 10,
     "Date": "2026-05-05T21:19:41.5152471+03:00"
-  },
-  {
-    "PlayerName": "Player",
-    "Score": 45665,
-    "Wave": 10,
-    "Date": "2026-05-05T22:15:55.3450833+03:00"
-  },
-  {
-    "PlayerName": "Oyuncu",
-    "Score": 45590,
-    "Wave": 10,
-    "Date": "2026-05-04T19:05:42.277159+03:00"
-  },
-  {
-    "PlayerName": "Player",
-    "Score": 43650,
-    "Wave": 10,
-    "Date": "2026-05-05T21:34:18.9388406+03:00"
   }
 ]

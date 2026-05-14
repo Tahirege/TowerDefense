@@ -15,17 +15,15 @@ namespace TowerDefense.Views
 {
     public class GameCanvas : Control
     {
-        // ── Game reference (değiştirilebilir) ─────────────────
-        private GameManager? _game;
-        private MapManager?  _map;
+        public GameManager? Game;
+        public MapManager?  Map;
 
-        // ── Interaction state ─────────────────────────────────
-        private string? _selectedType;
-        private Tower?  _selectedTower;
-        private float   _snapX, _snapY;
-        private bool    _canBuild;
+        public string? SelectedType;
+        public Tower?  SelectedTowerObj;
+        public float   SnapX, SnapY;
+        public bool    CanBuild;
 
-        private readonly Dictionary<string, float> _towerRanges = new()
+        public Dictionary<string, float> TowerRanges = new()
         {
             { "Arrow", 110f },
             { "Cannon", 90f },
@@ -35,45 +33,42 @@ namespace TowerDefense.Views
             { "Sniper", 220f }
         };
 
-        // ── Game loop ─────────────────────────────────────────
-        private readonly Stopwatch _sw = Stopwatch.StartNew();
-        private double _lastMs;
-        private readonly DispatcherTimer _timer;
+        public Stopwatch Sw = Stopwatch.StartNew();
+        public double LastMs;
+        public DispatcherTimer Timer;
 
-        // ── Events ────────────────────────────────────────────
         public event Action<string>? OnMessage;
         public event Action?         OnStateChanged;
 
-        public Tower? SelectedTower => _selectedTower;
+        public Tower? SelectedTower => SelectedTowerObj;
 
         public GameCanvas()
         {
             Focusable = true;
-            _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
-            _timer.Tick += TimerTick;
-            _timer.Start();
+            Timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
+            Timer.Tick += TimerTick;
+            Timer.Start();
         }
 
-        // ── Harita değişince yeni game ver ────────────────────
         public void SetGame(GameManager game)
         {
-            _game          = game;
-            _map           = game.Map;
-            _selectedType  = null;
-            _selectedTower = null;
-            _lastMs        = _sw.Elapsed.TotalMilliseconds;
+            Game          = game;
+            Map           = game.Map;
+            SelectedType  = null;
+            SelectedTowerObj = null;
+            LastMs        = Sw.Elapsed.TotalMilliseconds;
             InvalidateVisual();
         }
 
-        private void TimerTick(object? sender, EventArgs e)
+        public void TimerTick(object? sender, EventArgs e)
         {
-            if (_game == null) return;
+            if (Game == null) return;
             try
             {
-                double now = _sw.Elapsed.TotalMilliseconds;
-                float  dt  = Math.Min((float)((now - _lastMs) / 1000.0), 0.05f);
-                _lastMs = now;
-                _game.Update(dt);
+                double now = Sw.Elapsed.TotalMilliseconds;
+                float  dt  = Math.Min((float)((now - LastMs) / 1000.0), 0.05f);
+                LastMs = now;
+                Game.Update(dt);
                 InvalidateVisual();
                 OnStateChanged?.Invoke();
             }
@@ -83,11 +78,9 @@ namespace TowerDefense.Views
             }
         }
 
-        // ── Render ────────────────────────────────────────────
         public override void Render(DrawingContext context)
         {
-            if (_game == null) return;
-
+            if (Game == null) return;
             int w = (int)Bounds.Width;
             int h = (int)Bounds.Height;
             if (w <= 0 || h <= 0) return;
@@ -96,12 +89,11 @@ namespace TowerDefense.Views
             using var canvas = new SKCanvas(bmp);
             canvas.Clear(new SKColor(60, 110, 45));
 
-            _game.Draw(canvas);
+            Game.Draw(canvas);
             DrawPreview(canvas);
             DrawSelection(canvas);
             canvas.Flush();
 
-            // SKBitmap → Avalonia WriteableBitmap
             var avBmp = new WriteableBitmap(
                 new PixelSize(w, h), new Vector(96, 96),
                 PixelFormat.Bgra8888, AlphaFormat.Premul);
@@ -120,111 +112,95 @@ namespace TowerDefense.Views
             context.DrawImage(avBmp, new Rect(Bounds.Size));
         }
 
-        private void DrawPreview(SKCanvas c)
+        public void DrawPreview(SKCanvas c)
         {
-            if (_selectedType == null || _map == null) return;
-            byte r = _canBuild ? (byte)0   : (byte)255;
-            byte g = _canBuild ? (byte)255 : (byte)0;
+            if (SelectedType == null || Map == null) return;
+            byte r = CanBuild ? (byte)0   : (byte)255;
+            byte g = CanBuild ? (byte)255 : (byte)0;
 
-            // Range preview
-            if (_towerRanges.TryGetValue(_selectedType, out float range))
+            if (TowerRanges.TryGetValue(SelectedType, out float range))
             {
                 using var rc = new SKPaint { Color = new SKColor(r, g, 0, 30), IsAntialias = true };
                 using var rl = new SKPaint { Color = new SKColor(r, g, 0, 150), IsAntialias = true,
                     Style = SKPaintStyle.Stroke, StrokeWidth = 2.0f,
                     PathEffect = SKPathEffect.CreateDash(new float[] { 8, 4 }, 0) };
-                c.DrawCircle(_snapX, _snapY, range, rc);
-                c.DrawCircle(_snapX, _snapY, range, rl);
+                c.DrawCircle(SnapX, SnapY, range, rc);
+                c.DrawCircle(SnapX, SnapY, range, rl);
             }
 
             using var fill   = new SKPaint { Color = new SKColor(r, g, 0, 50),  IsAntialias = true };
             using var stroke = new SKPaint { Color = new SKColor(r, g, 0, 220), IsAntialias = true,
                 Style = SKPaintStyle.Stroke, StrokeWidth = 2f };
-            c.DrawRect(_snapX - 18, _snapY - 18, 36, 36, fill);
-            c.DrawRect(_snapX - 18, _snapY - 18, 36, 36, stroke);
+            c.DrawRect(SnapX - 18, SnapY - 18, 36, 36, fill);
+            c.DrawRect(SnapX - 18, SnapY - 18, 36, 36, stroke);
         }
 
-        private void DrawSelection(SKCanvas c)
+        public void DrawSelection(SKCanvas c)
         {
-            if (_selectedTower == null || !_selectedTower.IsAlive) return;
+            if (SelectedTowerObj == null || !SelectedTowerObj.IsAlive) return;
             using var p = new SKPaint { Color = SKColors.Yellow, Style = SKPaintStyle.Stroke,
                 StrokeWidth = 2.5f, IsAntialias = true };
-            c.DrawRect(_selectedTower.X - 20, _selectedTower.Y - 20, 40, 40, p);
+            c.DrawRect(SelectedTowerObj.X - 20, SelectedTowerObj.Y - 20, 40, 40, p);
         }
 
-        // ── Mouse ─────────────────────────────────────────────
         protected override void OnPointerMoved(PointerEventArgs e)
         {
-            if (_map == null) return;
+            if (Map == null) return;
             var pt = e.GetPosition(this);
-            (_snapX, _snapY) = _map.Snap((float)pt.X, (float)pt.Y);
-            _canBuild = _map.IsBuildable(_snapX, _snapY);
+            (SnapX, SnapY) = Map.Snap((float)pt.X, (float)pt.Y);
+            CanBuild = Map.IsBuildable(SnapX, SnapY);
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
-            if (_game == null || _map == null) return;
+            if (Game == null || Map == null) return;
             var pt = e.GetCurrentPoint(this);
             float mx = (float)pt.Position.X;
             float my = (float)pt.Position.Y;
 
             if (pt.Properties.IsLeftButtonPressed)
             {
-                if (_selectedType != null)
+                if (SelectedType != null) TryPlace();
+                else if (!TrySelect(mx, my))
                 {
-                    TryPlace();
-                }
-                else
-                {
-                    if (!TrySelect(mx, my))
-                    {
-                        if (_game.PlayerHero.Health > 0)
-                            _game.HeroMeleeAttack(mx, my);
-                    }
+                    if (Game.PlayerHero.Health > 0) Game.HeroMeleeAttack(mx, my);
                 }
             }
-            else if (pt.Properties.IsRightButtonPressed)
-            {
-                CancelSelection();
-            }
+            else if (pt.Properties.IsRightButtonPressed) CancelSelection();
         }
 
-        // Key handlers moved to GameWindow for global capture
-
-        // ── Public API ────────────────────────────────────────
         public void SelectTowerType(string type)
         {
-            _selectedType  = type;
-            _selectedTower = null;
-            if (_game != null)
-                foreach (var t in _game.Towers) t.IsSelected = false;
+            SelectedType  = type;
+            SelectedTowerObj = null;
+            if (Game != null)
+                foreach (var t in Game.Towers) t.IsSelected = false;
         }
 
         public void CancelSelection()
         {
-            _selectedType  = null;
-            _selectedTower = null;
-            if (_game != null)
-                foreach (var t in _game.Towers) t.IsSelected = false;
+            SelectedType  = null;
+            SelectedTowerObj = null;
+            if (Game != null)
+                foreach (var t in Game.Towers) t.IsSelected = false;
         }
 
-        // ── Private ───────────────────────────────────────────
-        private void TryPlace()
+        public void TryPlace()
         {
-            if (_game == null) return;
+            if (Game == null) return;
             try
             {
-                Tower tower = _selectedType switch
+                Tower tower = SelectedType switch
                 {
-                    "Arrow"  => new ArrowTower(_snapX, _snapY),
-                    "Cannon" => new CannonTower(_snapX, _snapY),
-                    "Ice"    => new IceTower(_snapX, _snapY),
-                    "Laser"  => new LaserTower(_snapX, _snapY),
-                    "Bomb"   => new BombTower(_snapX, _snapY),
-                    "Sniper" => new SniperTower(_snapX, _snapY),
+                    "Arrow"  => new ArrowTower(SnapX, SnapY),
+                    "Cannon" => new CannonTower(SnapX, SnapY),
+                    "Ice"    => new IceTower(SnapX, SnapY),
+                    "Laser"  => new LaserTower(SnapX, SnapY),
+                    "Bomb"   => new BombTower(SnapX, SnapY),
+                    "Sniper" => new SniperTower(SnapX, SnapY),
                     _ => throw new GameException("Bilinmeyen kule tipi")
                 };
-                _game.PlaceTower(tower);
+                Game.PlaceTower(tower);
                 OnMessage?.Invoke($"✅ {tower.TowerName} yerleştirildi!");
             }
             catch (InsufficientGoldException ex) { OnMessage?.Invoke($"❌ {ex.Message}"); }
@@ -232,20 +208,20 @@ namespace TowerDefense.Views
             catch (GameException             ex) { OnMessage?.Invoke($"❌ {ex.Message}"); }
         }
 
-        private bool TrySelect(float mx, float my)
+        public bool TrySelect(float mx, float my)
         {
-            if (_game == null) return false;
-            foreach (var t in _game.Towers) t.IsSelected = false;
-            _selectedTower = _game.Towers.FirstOrDefault(t =>
+            if (Game == null) return false;
+            foreach (var t in Game.Towers) t.IsSelected = false;
+            SelectedTowerObj = Game.Towers.FirstOrDefault(t =>
             {
                 float dx = t.X - mx, dy = t.Y - my;
                 return MathF.Sqrt(dx*dx + dy*dy) < 24;
             });
-            if (_selectedTower != null)
+            if (SelectedTowerObj != null)
             {
-                _selectedTower.IsSelected = true;
-                OnMessage?.Invoke($"🏰 {_selectedTower.TowerName} | Lv.{_selectedTower.Level} | " +
-                                  $"Yükselt:{_selectedTower.UpgradeCost}💰 | Sat:{_selectedTower.SellValue}💰");
+                SelectedTowerObj.IsSelected = true;
+                OnMessage?.Invoke($"🏰 {SelectedTowerObj.TowerName} | Lv.{SelectedTowerObj.Level} | " +
+                                  $"Yükselt:{SelectedTowerObj.UpgradeCost}💰 | Sat:{SelectedTowerObj.SellValue}💰");
                 return true;
             }
             return false;

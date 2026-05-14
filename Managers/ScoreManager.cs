@@ -8,24 +8,24 @@ namespace TowerDefense.Managers
 
     public class ScoreManager : ISaveable
     {
-        private int _score;
-        private List<ScoreRecord> _board = new();
-        private string _playerName;
-        private const string DefaultPath = "Data/scores.json";
+        public int CurrentScore;
+        public List<ScoreRecord> LeaderboardList = new();
+        public string PlayerName;
+        public const string DefaultPath = "Data/scores.json";
 
-        public int Score => _score;
-        public IReadOnlyList<ScoreRecord> Leaderboard => _board.AsReadOnly();
+        public int Score => CurrentScore;
+        public List<ScoreRecord> Leaderboard => LeaderboardList;
 
         public ScoreManager(string playerName = "Oyuncu")
-        { _playerName = playerName; TryLoad(); }
+        { PlayerName = playerName; TryLoad(); }
 
-        public void Add(int pts) => _score += pts;
-        public void Reset() => _score = 0;
+        public void Add(int pts) => CurrentScore += pts;
+        public void Reset() => CurrentScore = 0;
 
         public void SaveHighScore(int wave)
         {
-            _board.Add(new ScoreRecord(_playerName, _score, wave, DateTime.Now));
-            _board = _board.OrderByDescending(r => r.Score).Take(10).ToList();
+            LeaderboardList.Add(new ScoreRecord(PlayerName, CurrentScore, wave, DateTime.Now));
+            LeaderboardList = LeaderboardList.OrderByDescending(r => r.Score).Take(10).ToList();
             Save(DefaultPath);
         }
 
@@ -34,7 +34,7 @@ namespace TowerDefense.Managers
             try
             {
                 Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path) ?? "Data");
-                File.WriteAllText(path, JsonSerializer.Serialize(_board, new JsonSerializerOptions { WriteIndented = true }));
+                File.WriteAllText(path, JsonSerializer.Serialize(LeaderboardList, new JsonSerializerOptions { WriteIndented = true }));
             }
             catch (Exception ex) { throw new SaveLoadException("Skor kaydedilemedi", ex); }
         }
@@ -44,11 +44,11 @@ namespace TowerDefense.Managers
             try
             {
                 if (!File.Exists(path)) return;
-                _board = JsonSerializer.Deserialize<List<ScoreRecord>>(File.ReadAllText(path)) ?? new();
+                LeaderboardList = JsonSerializer.Deserialize<List<ScoreRecord>>(File.ReadAllText(path)) ?? new();
             }
             catch (Exception ex) { throw new SaveLoadException("Skor yüklenemedi", ex); }
         }
 
-        private void TryLoad() { try { Load(DefaultPath); } catch { } }
+        public void TryLoad() { try { Load(DefaultPath); } catch { } }
     }
 }
