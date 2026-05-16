@@ -1,8 +1,9 @@
 # 🛡️ Tower Defense — OOP Projesi
 
 ## Proje Özeti
-C# Avalonia UI ile geliştirilmiş tam özellikli Tower Defense oyunu.
-Nesne Yönelimli Programlama prensiplerini gerçek bir oyun üzerinde uygular.
+Bu proje, C# programlama dili ve Avalonia UI kütüphanesi kullanılarak geliştirilmiş bir Kule Savunma (Tower Defense) oyunudur. İstanbul Medeniyet Üniversitesi Bilgisayar Mühendisliği 1. sınıf Nesne Yönelimli Programlama dersi dönem sonu çalışması olarak Tahir Ege Baybür (25120205076) ve Yasin Söylemez (25120205088) tarafından hazırlanmıştır.
+
+Oyunun temel amacı, dalgalar halinde gelen düşman birimlerine karşı stratejik noktalara farklı kuleler yerleştirmek, bu kuleleri geliştirmek ve haritayı savunmaktır. Proje, teorik Nesne Yönelimli Programlama (NYP) prensiplerini pratik bir oyun mimarisi üzerinde uygulamayı hedefler. Görev dağılımına son bölümünde yer verilmiştir.
 
 ---
 
