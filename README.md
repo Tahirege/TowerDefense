@@ -1,7 +1,7 @@
 # 🛡️ Tower Defense — OOP Projesi
 
 ## Proje Özeti
-Bu proje, C# programlama dili ve Avalonia UI kütüphanesi kullanılarak geliştirilmiş bir Kule Savunma (Tower Defense) oyunudur. İstanbul Medeniyet Üniversitesi Bilgisayar Mühendisliği 1. sınıf Nesne Yönelimli Programlama dersi dönem sonu çalışması olarak Tahir Ege Baybür (25120205076) ve Yasin Söylemez (25120205088) tarafından hazırlanmıştır.
+Bu proje, C# programlama dili ve Avalonia UI kütüphanesi kullanılarak geliştirilmiş bir Kule Savunma (Tower Defense) oyunudur. İstanbul Medeniyet Üniversitesi Bilgisayar Mühendisliği 1. sınıf Nesne Yönelimli Programlama dersi dönem sonu projesi olarak Tahir Ege Baybür (25120205076) ve Yasin Söylemez (25120205088) tarafından hazırlanmıştır.
 
 Oyunun temel amacı, dalgalar halinde gelen düşman birimlerine karşı stratejik noktalara farklı kuleler yerleştirmek, bu kuleleri geliştirmek ve haritayı savunmaktır. Proje, teorik Nesne Yönelimli Programlama (NYP) prensiplerini pratik bir oyun mimarisi üzerinde uygulamayı hedefler. Görev dağılımına son bölümünde yer verilmiştir.
 
@@ -112,3 +112,30 @@ git clone <repo>
 cd TowerDefense
 dotnet run
 ```
+
+
+## İş Bölümü
+
+### 1. Tahir Ege Baybür
+Oyunun arka plan mekanikleri, veri yönetimi ve temel nesne yapılarının kurulması:
+* **`GameManager.cs`:** Ana oyun döngüsü ve düşman dalga yönetimi.
+* **`Enemy.cs`, `Tower.cs`, `Hero.cs`:** Karakter/kule taban sınıfları ve yetenek mantığı.
+* **`MapManager.cs`:** Harita matrisi ve engel yerleşimi.
+* **`ScoreManager.cs`:** Skor ve kaynak sistemi.
+* **`Shot.cs`, `Bullet.cs`:** Mermi hareket fiziği ve hasar tespiti.
+
+### 2. Yasin Söylemez
+Oyuncu etkileşimi, görsel pencerelerin tasarımı ve seslerin entegre edilmesi:
+* **`MainMenuWindow.axaml/.cs`:** Ana menü ve kullanıcı etkileşim arayüzü.
+* **`GameWindow.axaml/.cs`:** Oyun içi kaynak gösterimleri (can, altın vb.).
+* **`GameCanvas.cs`:** Giriş (input) kontrolleri ve çizim alanı yönetimi.
+* **`AudioManager.cs`:** Arka plan müzikleri ve ses efektleri.
+* **`Effects.cs`:** Patlama, can kaybı ve kule yükseltme gibi görsel efektler.
+
+### 3. Yapay Zeka (AI) Destekli Geliştirme
+Kod kalitesini artırmak, karakter/düşman çizimlerini oluşturmak ve matematiksel hesaplamalar (örneğin kulenin en yakın düşmanı seçerek saldırması) için yapay zeka araçlarından destek alınmıştır:
+* **`HeroRenderer.cs`, `EnemyRenderer.cs`, `TowerRenderer.cs`:** Karakterlerin ekrana çizilmesini sağlayan render kodları.
+* **Matematiksel Hesaplamalar:** Menzil kontrolü ve mermi açısı gibi geometrik hesaplamalar.
+* **Optimizasyon ve Refactoring:** Kod iyileştirmeleri ve temiz kod düzenlemeleri.
+* **Şablon Kod Üretimi:** Yeni nesne türleri için altyapı üretimi.
+* **Hata Analizi:** Çalışma zamanı hatalarının tespiti ve çözümü.
